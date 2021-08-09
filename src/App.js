@@ -7,6 +7,7 @@ const useValidation = (value, validations) => {
     const [minLengthErr,setMinLengthErr] = useState(false);
     const [maxLengthErr, setMaxLengthErr] = useState(false);
     const [emailError, setEmailError] = useState(false);
+    const [inputValid, setInputValid] = useState(false)
 
     useEffect(() =>{
         for (const validation in validations ) {
@@ -30,11 +31,20 @@ const useValidation = (value, validations) => {
         }
     }, [value]);
 
+    useEffect(()=>{
+        if(isEmpty || maxLengthErr || minLengthErr ||emailError){
+            setInputValid(false)
+        } else {
+            setInputValid(true)
+        }
+    }, [isEmpty, maxLengthErr,minLengthErr,emailError ])
+
     return {
         isEmpty,
         minLengthErr,
         maxLengthErr,
-        emailError
+        emailError,
+        inputValid
     }
 
 };
@@ -115,7 +125,7 @@ const App = () => {
                    name ="password" type="password"
                    placeholder="password" className="input"/>
         </div>
-        <button  type = "submit" className="btn">Confirm</button>
+        <button disabled ={!email.inputValid || !password.inputValid} type = "submit" className="btn">Confirm</button>
       </form>
     </div>
   );
