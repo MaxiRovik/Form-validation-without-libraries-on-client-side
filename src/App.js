@@ -105,10 +105,10 @@ const App = () => {
                 <div style={{color:"red", fontSize: "14px"}} >
                     Field "password" must have more then 4 symbols
                 </div>}
-            {(password.isTouched && password.maxLengthErr) &&
-            <div style={{color:"red", fontSize: "14px"}} >
-                Field "password" must have less then 15 symbols
-            </div>}
+                {(password.isTouched && password.maxLengthErr) &&
+                <div style={{color:"red", fontSize: "14px"}} >
+                    Field "password" must have less then 15 symbols
+                </div>}
 
             <input onChange={(e)=>password.onChange(e)} onBlur={(e)=>password.onBlur(e)}
                    value={password.value}
