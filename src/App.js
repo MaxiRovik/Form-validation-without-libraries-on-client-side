@@ -1,10 +1,12 @@
 import React from 'react';
 import './App.css';
 import {useState, useEffect} from "react";
+import MailError from "./Components/MailErrors";
+import PasswordError from "./Components/PasswordErrors";
 
 const useValidation = (value, validations) => {
-    const [isEmpty,setEmpty] = useState(true);
-    const [minLengthErr,setMinLengthErr] = useState(false);
+    const [isEmpty, setEmpty] = useState(true);
+    const [minLengthErr, setMinLengthErr] = useState(false);
     const [maxLengthErr, setMaxLengthErr] = useState(false);
     const [emailError, setEmailError] = useState(false);
     const [inputValid, setInputValid] = useState(false)
@@ -37,7 +39,7 @@ const useValidation = (value, validations) => {
         } else {
             setInputValid(true)
         }
-    }, [isEmpty, maxLengthErr,minLengthErr,emailError ])
+    }, [isEmpty, maxLengthErr,minLengthErr,emailError ]);
 
     return {
         isEmpty,
@@ -46,9 +48,7 @@ const useValidation = (value, validations) => {
         emailError,
         inputValid
     }
-
 };
-
 
 const  useInput = (initialValue, validations) => {
     const [value, setValue] = useState(initialValue);
@@ -71,7 +71,6 @@ const  useInput = (initialValue, validations) => {
     }
 };
 
-
 const App = () => {
     const email = useInput('', {isEmpty: true, minLength:4, maxLength:20, isValidEmail:''});
     const password = useInput('', {isEmpty: true, minLength:5, maxLength:15});
@@ -82,23 +81,8 @@ const App = () => {
         <h1 className="title">Registration</h1>
 
         <div className="field">
-             <label for="email">Your email</label>
-                {(email.isTouched && email.isEmpty) &&
-                    <div style={{color:"red", fontSize: "14px"}} >
-                              Field "email" can not be empty
-                    </div>}
-                {(email.isTouched && email.minLengthErr) &&
-                    <div style={{color:"red", fontSize: "14px"}} >
-                                 Field "email" must have more then 4 symbols
-                    </div>}
-                {(email.isTouched && email.maxLengthErr) &&
-                    <div style={{color:"red", fontSize: "14px"}} >
-                        Field "email" must have less then 20 symbols
-                    </div>}
-                {(email.isTouched && email.emailError) &&
-                    <div style={{color:"red",fontSize: "14px"}} >
-                        incorrect email
-                    </div>}
+            <label for="email">Your email</label>
+            <MailError email={email}/>
             <input onChange={(e)=>email.onChange(e)} onBlur={(e)=>email.onBlur(e)}
                    value={email.value}
                    name="email" type="text"
@@ -107,24 +91,13 @@ const App = () => {
 
         <div className="field">
             <label for="password">Enter your password</label>
-                {(password.isTouched && password.isEmpty) &&
-                <div style={{color:"red", fontSize: "14px"}} >
-                    Field "password" can not be empty
-                </div>}
-                {(password.isTouched && password.minLengthErr) &&
-                <div style={{color:"red", fontSize: "14px"}} >
-                    Field "password" must have more then 4 symbols
-                </div>}
-                {(password.isTouched && password.maxLengthErr) &&
-                <div style={{color:"red", fontSize: "14px"}} >
-                    Field "password" must have less then 15 symbols
-                </div>}
-
+            <PasswordError password = {password}/>
             <input onChange={(e)=>password.onChange(e)} onBlur={(e)=>password.onBlur(e)}
                    value={password.value}
                    name ="password" type="password"
                    placeholder="password" className="input"/>
         </div>
+
         <button disabled ={!email.inputValid || !password.inputValid} type = "submit" className="btn">Confirm</button>
       </form>
     </div>
